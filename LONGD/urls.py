@@ -19,11 +19,13 @@ from blog.views import *
 urlpatterns = [
     url(r'^$',blog),
     url(r'^api_list.html',api_list),
+    url(r'^delapi/(\d+)/',delete_api),
+    url(r'^delcase/(\d+)/',delete_case),
     url(r'^addapi.html',addapi),
     url(r'^addcase.html',addcase),
     url(r'^api_case.html',api_case),
     url(r'^project.html',project),
-    url(r'^result.html',result),
+    url(r'^result.html',apitest),
 
     #url(r'^api/',api),
     url(r'^admin/', admin.site.urls),

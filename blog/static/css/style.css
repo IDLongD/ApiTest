@@ -302,7 +302,8 @@ margin-top:50px;
   background: #2ad2c9;
   margin: 0 auto;
   text-align: center;
-  position: relative;	
+  position: relative;
+  cursor: pointer;
 }
 .glyphicon-grain, .glyphicon-apple, .glyphicon-tree-conifer, .glyphicon-leaf, .glyphicon-thumbs-up, .glyphicon-globe {
   z-index: 9999;
@@ -1934,6 +1935,9 @@ line-height:1.8em;
 	.wel-header h3, .pests-header h3, .news-text h3, .testimonial h3, .team-info h3 {
 	  font-size: 28px;
 	}
+    .wel-header td{
+      line-height:25px;
+    }
 	.wel-grids,.ch-grid,.news-grids,.work-bottom {
 	  margin-top: 35px;
 	}
