@@ -17,9 +17,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="static/js/jquery-1.11.1.min.js"></script>
 <!-- //js -->
 <!-- fonts -->
-<link href='http://fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-<link href='http://fonts.useso.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-<!-- //fonts -->
 
 </head>
 <body>
@@ -85,7 +82,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<div class="container">
 		<div class="wel-header">
             <h3>接口列表</h3>
-            <h3> </h3>
+                <div style="margin:0 auto;width:100px;font-size:20px">
+                <a href="addapi.html">[新增接口]</a>
+                </div>
             <table  width=1180 frame=hsides>
                 <tr bgcolor="#A8A8A8"><th>接口id</th><th>接口名称</th><th>接口链接</th><th>备注</th><th>操作</th>
                 {% for api in apiList %}

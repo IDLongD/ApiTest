@@ -58,9 +58,10 @@ def delete_case(requests,id):
 
 
 class AddForm(forms.Form):
+    test = forms.ALL_FIELDS
     name = forms.CharField(label = "接口名称" , max_length = 50)
     url = forms.URLField(label = "接口连接" , max_length = 200)
-    notes = forms.CharField(label = "接口备注")
+    notes = forms.CharField(label = "接口备注",required=False)
 
 #新增接口
 def addapi(request):
@@ -78,56 +79,49 @@ def addapi(request):
             api.notes = notes
             api.save()
             #返回新增成功页面
-            return render_to_response('success.html',{'name':name})
+            return render_to_response('success.html',{'name':name,"jieguo":" 接口新增成功"})
     else:
         uf = AddForm()
     return render_to_response('addapi.html',{'uf':uf})
 
 
 class AddCaseForm(forms.Form):
-    apiname = forms.CharField(label = "接口名称" ,max_length = 50)
-    apiurl = forms.URLField(label = "接口链接" )
+    apiname = forms.ModelChoiceField(label = "接口名称",queryset = apilist.objects.all(),required =True)
+    mothed = forms.TypedChoiceField(label = "请求方法" ,choices = (("GET", "GET"), ("POST", "POST")))
     name = forms.CharField(label = "用例名称" ,max_length = 50)
-    mothed = forms.CharField(label = "请求方法" ,max_length = 20)
     data = forms.CharField(label = "请求数据" )
     check = forms.CharField(label = "检查点" ,max_length = 100)
-    notes = forms.CharField(label = "备注" )
+    notes = forms.CharField(label = "备注" ,required=False)
 
 #新增用例
 def addcase(request):
     if request.method == "POST":
-        uf = AddCaseForm(request.POST)
-        if uf.is_valid():
+        form = AddCaseForm(request.POST)
+        if form.is_valid():
             #获取表单信息
-            apiname = uf.cleaned_data['apiname']
-            apiurl = uf.cleaned_data['apiurl']
-            name = uf.cleaned_data['name']
-            mothed = uf.cleaned_data['mothed']
-            data = uf.cleaned_data['data']
-            check = uf.cleaned_data['check']
-            notes = uf.cleaned_data['notes']
-            #将表单写入数据库
+            cd = form.cleaned_data
             case = apicase()
-            case.apiname = apiname
-            case.apiurl = apiurl
-            case.mothed = mothed
-            case.data = data
-            case.check = check
-            case.notes = notes
-            case.name = name
+            case.apiname = cd['apiname']
+            case.apiurl = apilist.objects.get(name = case.apiname).url
+            case.mothed = cd['mothed']
+            case.name = cd['name']
+            case.data = cd['data']
+            case.check = cd['check']
+            case.notes = cd['notes']
+            #将表单写入数据库
             case.save()
             #返回新增成功页面
-            return render_to_response('success.html',{'name':name})
+            return render_to_response('success.html',{'name':case.name,"jieguo":"用例新增成功"})
     else:
-        uf = AddCaseForm()
-    return render_to_response('addcase.html',{'uf':uf})
+        form = AddCaseForm()
+    return render_to_response('addcase.html',{"form":form})
 
-
+#接口get请求测试
 def apitest(request):
     t = loader.get_template("result.html")
-    url = apicase.objects.get(id = 4).apiurl
-    check = apicase.objects.get(id = 4).check
-    data = apicase.objects.get(id = 4).data
+    url = apicase.objects.get(id = 5).apiurl
+    check = apicase.objects.get(id = 5).check
+    data = apicase.objects.get(id = 5).data
     url = url + "?" + data
     req = urllib2.Request(url)
     r = urllib2.urlopen(req)
@@ -146,3 +140,28 @@ def apitest(request):
 def apiget(request,id):
     apicase = apicase.objects.get( id = 4)
     return {"url": apicase.apiurl,"check":apicase.check}
+
+
+class AddProject(forms.Form):
+    ACTIVITY_STYLE = (("a", "1"), ("b", "2"), ("c", "3"))
+    name = forms.CharField(label = "项目名称" ,max_length = 50)
+    casej = forms.MultipleChoiceField(label = "选择用例",choices=ACTIVITY_STYLE, widget=forms.CheckboxSelectMultiple())
+    notes = forms.CharField(label = "备注" ,required=False)
+
+def project(request):
+     if request.method == "POST":
+        forp = AddProject(request.POST)
+        if form.is_valid():
+            #获取表单信息
+            cd = forp.cleaned_data
+            pro = project()
+            pro.name = cd['name']
+            pro.casej = cd['casej']
+            pro.notes = cd['notes']
+            #将表单写入数据库
+            pro.save()
+            #返回新增成功页面
+            return render_to_response('success.html',{'name':pro.name,"jieguo":"项目新建成功"})
+     else:
+        forp = AddProject()
+     return render_to_response('project.html',{"forp":forp})

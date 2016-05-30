@@ -2066,12 +2066,17 @@ line-height:1.8em;
 	.wel-header h3, .pests-header h3, .news-text h3, .testimonial h3, .team-info h3 {
 	  font-size: 25px;
 	}
+
 	.welcome, .news, .about-page, .team, .typrography, .works-section, .contact, .single, .moments {
 	  padding: 55px 0;
 	}
 	.wel-header p, .pests-header p, .news-text p {
 	  margin: 8px auto 0 auto;
 	  width: 81%;
+	  }
+    .wel-header a {
+	  font-size: 20px;
+      line-height:100px;
 	  }
 	.wel-grids, .ch-grid, .news-grids, .work-bottom {
 	  margin-top: 30px;
@@ -2326,6 +2331,9 @@ line-height:1.8em;
 	.wel-header h3, .pests-header h3, .news-text h3, .testimonial h3, .team-info h3 {
 	  font-size: 25px;
 	}
+    .wel-header h2, .pests-header h2 {
+      font-size: 20px;
+    }
 	.welcome, .news, .about-page, .team, .typrography, .works-section, .contact, .single, .moments {
 	  padding: 55px 0;
 	}
@@ -2333,6 +2341,11 @@ line-height:1.8em;
 	  margin: 8px auto 0 auto;
 	  width: 81%;
 	  }
+
+    .wel-header a {
+      font-size: 25px;
+    }
+
 	.wel-grids, .ch-grid, .news-grids, .work-bottom {
 	  margin-top: 30px;
 	}
