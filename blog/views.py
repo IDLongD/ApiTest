@@ -16,9 +16,6 @@ from django.shortcuts import render
 def blog(request):
     return render_to_response("index.html")
 
-def project(request):
-    return render_to_response("project.html")
-
 def result(request):
     return render_to_response("result.html")
 
@@ -142,16 +139,15 @@ def apiget(request,id):
     return {"url": apicase.apiurl,"check":apicase.check}
 
 
-class AddProject(forms.Form):
-    ACTIVITY_STYLE = (("a", "1"), ("b", "2"), ("c", "3"))
+class AddProjectForm(forms.Form):
     name = forms.CharField(label = "项目名称" ,max_length = 50)
-    casej = forms.MultipleChoiceField(label = "选择用例",choices=ACTIVITY_STYLE, widget=forms.CheckboxSelectMultiple())
+    casej = forms.MultipleChoiceField(label = "选择用例",choices=apicase.objects.values_list("id","name"), widget=forms.CheckboxSelectMultiple())
     notes = forms.CharField(label = "备注" ,required=False)
 
-def project(request):
+def addproject(request):
      if request.method == "POST":
-        forp = AddProject(request.POST)
-        if form.is_valid():
+        forp = AddProjectForm(request.POST)
+        if forp.is_valid():
             #获取表单信息
             cd = forp.cleaned_data
             pro = project()
@@ -163,5 +159,39 @@ def project(request):
             #返回新增成功页面
             return render_to_response('success.html',{'name':pro.name,"jieguo":"项目新建成功"})
      else:
-        forp = AddProject()
+        forp = AddProjectForm()
      return render_to_response('project.html',{"forp":forp})
+
+#项目列表
+def project_list(requests):
+    t = loader.get_template("project_list.html")
+    projectList = project.objects.all().order_by("id")
+    #apiList = {"id":1,"ApiName":"a","ApiUrl":"aa","ApiNotes":"aaa"}
+    c = Context({ "projectList": projectList })
+    return  HttpResponse(t.render(c))
+
+def goproject(requests,id):
+    t = loader.get_template("project_result.html")
+    casej = project.objects.get(id = id).casej
+    #数据库信息显示的是 casej = [u'17', u'18']
+    coo = []
+    for cs in eval(casej):
+        case = apicase.objects.get(id = cs)
+        url = case.apiurl
+        check = case.check
+        data = case.data
+        url = url + "?" + data
+        req = urllib2.Request(url)
+        r = urllib2.urlopen(req)
+        code = r.getcode()
+        result = r.read()
+        #c = Context({"check":check,"url":url,"code":code,"result":result})
+        if re.search(check,result):
+            i = {"check":check,"url":url,"code":code,"result":"pass"}
+            coo.append(i)
+        else:
+            i = {"check":check,"url":url,"code":code,"result":"pass"}
+            coo.append(i)
+        time.sleep(0.2)
+    c = Context({"coo":coo})
+    return  HttpResponse(t.render(c))

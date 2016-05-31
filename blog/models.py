@@ -30,7 +30,6 @@ class apicase(models.Model):
     class Meta:
         db_table = "apicase"
 
-
 class project(models.Model):
     name = models.CharField(max_length= 100)
     casej = models.TextField()

@@ -16,7 +16,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- js -->
 <script src="static/js/jquery-1.11.1.min.js"></script>
 <!-- //js -->
-
+<!-- fonts -->
 
 </head>
 <body>
@@ -81,17 +81,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="welcome">
 	<div class="container">
 		<div class="wel-header">
-			<h3>用例列表</h3>
+            <h3>项目列表</h3>
                 <div style="margin:0 auto;width:100px;font-size:20px">
-                <a href="addcase.html">[新增用例]</a>
+                <a href="project.html">[新增项目]</a>
                 </div>
-            <table  width=1200 frame=hsides>
-                <tr bgcolor="#A8A8A8"><th>用例id</th><th>用例编号</th><th>接口名称</th><th>接口链接</th><th>用例数据</th><th>请求方法</th><th>检验数据</th><th>操作</th>
-                {% for case in apiCase %}
-                <tr><td id="{{ case.id }}">{{ case.id }}</td><td>{{ case.name }}</td><td>{{ case.apiname }}</td><td>{{ case.apiurl }}</td><td>{{ case.data }}</td><td>{{ case.mothed }}</td><td>{{ case.check }}</td><td><a class = "dell" onclick="return confirm('请确认删除');">删除</a></td>
+            <table  width=1180 frame=hsides>
+                <tr bgcolor="#A8A8A8"><th>项目id</th><th>项目名称</th><th>用例集</th><th>备注</th><th>操作</th>
+                {% for project in projectList %}
+                <tr><td id="{{ project.id }}">{{ project.id }}</td><td>{{ project.name }}</td><td>{{ project.casej }}</td><td>{{ api.notes }}</td><td><a class="del"  onclick="return confirm('请确认执行');">执行</a></td>
                 {% endfor %}
             </table>
-
 		</div>
     </div>
 </div>
@@ -147,10 +146,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			event.preventDefault();
 			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 		});
-        $(document).on('click','.dell',function(){
+
+        $(document).on('click','.del',function(){
             var $this  = $(this);
             var id = $this.closest("tr").find("td:first").attr("id");
-             window.location.href = "/delcase/" + id;
+             window.location.href = "/result/" + id;
         })
 	});
 </script>
@@ -159,4 +159,5 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<script src="static/js/bootstrap.js"></script>
 <!-- //for bootstrap working -->
 </body>
-</html
+</html>
+

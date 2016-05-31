@@ -24,8 +24,10 @@ urlpatterns = [
     url(r'^addapi.html',addapi),
     url(r'^addcase.html',addcase),
     url(r'^api_case.html',api_case),
-    url(r'^project.html',project),
-    url(r'^result.html',apitest),
+    url(r'^project.html',addproject),
+    url(r'^project_list.html',project_list),
+    url(r'^result/(\d+)/',goproject),
+    url(r'^result.html',result),
 
     #url(r'^api/',api),
     url(r'^admin/', admin.site.urls),
