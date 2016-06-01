@@ -27,8 +27,8 @@ urlpatterns = [
     url(r'^project.html',addproject),
     url(r'^project_list.html',project_list),
     url(r'^result/(\d+)/',goproject),
-    url(r'^result.html',result),
-
+    url(r'^result.html',goresult),
+    url(r'^details/(\d+)/',details),
     #url(r'^api/',api),
     url(r'^admin/', admin.site.urls),
 ]

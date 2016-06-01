@@ -172,26 +172,97 @@ def project_list(requests):
 
 def goproject(requests,id):
     t = loader.get_template("project_result.html")
+    names = project.objects.get(id = id).name
     casej = project.objects.get(id = id).casej
     #数据库信息显示的是 casej = [u'17', u'18']
+    total = 0
+    ps = 0
+    fail = 0
     coo = []
     for cs in eval(casej):
         case = apicase.objects.get(id = cs)
+        name = case.name
         url = case.apiurl
         check = case.check
         data = case.data
-        url = url + "?" + data
-        req = urllib2.Request(url)
-        r = urllib2.urlopen(req)
-        code = r.getcode()
-        result = r.read()
-        #c = Context({"check":check,"url":url,"code":code,"result":result})
-        if re.search(check,result):
-            i = {"check":check,"url":url,"code":code,"result":"pass"}
-            coo.append(i)
-        else:
-            i = {"check":check,"url":url,"code":code,"result":"pass"}
-            coo.append(i)
-        time.sleep(0.2)
-    c = Context({"coo":coo})
+        mothed = case.mothed
+        if mothed == "GET":
+            try:
+                url = url + "?" + data
+                req = urllib2.Request(url)
+                r = urllib2.urlopen(req)
+                code = r.getcode()
+                result = r.read()
+                #c = Context({"check":check,"url":url,"code":code,"result":result})
+                re.search(check,result)
+                i = {"name":name,"check":check,"url":url,"code":code,"resu":"pass"}
+                coo.append(i)
+                ps = ps + 1
+                total = total + 1
+            except Exception, e:
+                i = {"name":name,"check":check,"url":url,"code":code,"resu":e}
+                coo.append(i)
+                fail = fail + 1
+                total = total + 1
+            """
+            if re.search(check,result):
+                i = {"check":check,"url":url,"code":code,"result":"pass"}
+                coo.append(i)
+            else:
+                i = {"check":check,"url":url,"code":code,"result":"pass"}
+                coo.append(i)
+            """
+            time.sleep(0.2)
+
+        if mothed == "POST":
+            user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
+            headers = { 'User-Agent' : user_agent }
+            data = urllib2.quote(str(data))
+            req = urllib2.Request(url+data,data,headers)
+            try:
+                r = urllib2.urlopen(req)
+                code = r.getcode()
+                result = r.read()
+                re.search(check,result)
+                i = {"name":name,"check":check,"url":url,"code":code,"resu":"pass"}
+                coo.append(i)
+                ps = ps + 1
+                total = total + 1
+
+            except Exception, e:
+                i = {"name":name,"check":check,"url":url,"code":code,"resu":e}
+                coo.append(i)
+                fail = fail + 1
+                total = total + 1
+            time.sleep(0.2)
+
+    b = results(name=names,total = total,ps = ps,fail = fail,result = coo)
+    b.save()
+    c = Context({"coo":coo,"names":names})
     return  HttpResponse(t.render(c))
+
+
+def goresult(requests):
+    t = loader.get_template("result.html")
+    resultList = results.objects.all().order_by("id")
+    c = Context({ "resultList": resultList })
+    return  HttpResponse(t.render(c))
+
+def details(requests,id):
+    t = loader.get_template("project_result.html")
+    resu = results.objects.get(id = id).result
+    names = results.objects.get(id = id).name
+    coo = []
+    for i in eval(resu):
+        """
+        name = r.name
+        check = r.check
+        url = r.url
+        code = r.code
+        resu = r.resu
+        i = {"name":name,"check":check,"url":url,"code":code,"resu":resu}
+        """
+        coo.append(i)
+    c = Context({"coo":coo,"names":names})
+    return  HttpResponse(t.render(c))
+

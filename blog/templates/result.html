@@ -81,8 +81,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="welcome">
 	<div class="container">
 		<div class="wel-header">
-			    <h3>执行结果</h3>
-                <li>{{ url }},{{ code }},{{ check }},{{ result }}</li>
+			    <h3>项目执行结果列表</h3>
+                <table  width=1200 frame=hsides>
+                <tr bgcolor="#A8A8A8"><th>项目名称</th><th>执行时间</th><th>执行用例总数</th><th>通过</th><th>失败</th><th>操作</th>
+                {% for result in resultList %}
+                <tr><td id="{{ result.id }}">{{ result.name }}</td><td>{{ result.time }}</td><td>{{ result.total }}</td><td>{{ result.ps }}</td><td>{{ result.fail }}</td><td><a class="dell">详情</a></td>
+                {% endfor %}
+                </table>
 		</div>
     </div>
 </div>
@@ -138,6 +143,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			event.preventDefault();
 			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
 		});
+        $(document).on('click','.dell',function(){
+            var $this  = $(this);
+            var id = $this.closest("tr").find("td:first").attr("id");
+             window.location.href = "/details/" + id;
+        });
 	});
 </script>
 <!-- start-smoth-scrolling -->

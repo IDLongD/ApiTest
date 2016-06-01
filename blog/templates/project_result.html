@@ -84,10 +84,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="welcome">
 	<div class="container">
 		<div class="wel-header">
-                 <h3>执行结果</h3>
-            {% for co in coo %}
-                <li>{{ co.url }},{{ co.code }},{{ co.result }},{{ co.check }}</li>
-            {% endfor %}
+            <h3>项目 {{ names }} 执行结果详情</h3>
+                <table  width=1200 frame=hsides>
+                <tr bgcolor="#A8A8A8"><th>用例名称</th><th>接口链接</th><th>检验点</th><th>状态码</th><th>执行结果</th>
+                {% for co in coo %}
+                <tr><td id="{{ co.name }}">{{ co.name }}</td><td>{{ co.url }}</td><td>{{ co.check }}</td><td>{{ co.code }}</td><td>{{ co.resu }}</td>
+                {% endfor %}
+                </table>
 		</div>
     </div>
 </div>

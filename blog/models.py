@@ -1,6 +1,6 @@
 #coding=utf-8
 from __future__ import unicode_literals
-
+from django.utils import timezone
 from django.db import models
 
 # Create your models here.
@@ -36,3 +36,13 @@ class project(models.Model):
     notes = models.CharField(max_length =200)
     class Meta:
         db_table = "project"
+
+class results(models.Model):
+    name = models.CharField(max_length= 100)
+    time = models.DateTimeField(auto_now=True)
+    total = models.CharField(max_length= 10)
+    ps = models.CharField(max_length= 10)
+    fail = models.CharField(max_length= 10)
+    result = models.TextField()
+    class Meta:
+        db_table = "results"
